@@ -25,25 +25,25 @@ margin: 0 auto;
 .nav {
 	display:block;
 	text-indent:-10000px;
-	position:absolute;
+	//position:absolute;
 	cursor:pointer;
 }
 
 #leftNav {
-	top:223px;
-	left:780px;
-	width:94px;
-	height:34px;
+	//top:223px;
+	//left:780px;
+	width:60px;
+	height:60px;
 	background-image:url(previous.png);
 	background-repeat:no-repeat;
 	z-index:999;
 }
 
 #rightNav {
-	top:225px;
-	left:910px;
-	width:53px;
-	height:26px;
+	//top:225px;
+	//left:910px;
+	width:60px;
+	height:60px;
 	background-image:url(next.png);
 	background-repeat:no-repeat;
 	z-index:999;
@@ -133,9 +133,9 @@ margin: 0 auto;
 		var slideShowInterval;
 		var speed = 16000;
 
-		$('#slideshow')
-		.prepend('<span class="nav" id="leftNav">Move Left</span>')
-		.append('<span class="nav" id="rightNav">Move Right</span>');
+		$('.slideText')
+		.prepend('<div class="nav" id="leftNav">Move Left</div><div class="nav" id="rightNav">Move Right</div>');
+
 
 		slideShowInterval = setInterval(changePosition, speed);
 
