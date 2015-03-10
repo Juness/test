@@ -35,11 +35,34 @@ width: 100%;
 <img src="testanimal.jpeg">
 </div>
 <div class="wide" id="section2">
+<div class="nav">
+<a href="#section1">prev</a>
+<a href="#section3">next</a>
+</div>
 <img src="testanimal.jpeg">
 </div>
 <div class="wide" id="section3">
 <img src="testanimal.jpeg">
 </div>
-
+ <!-- The JavaScript -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="jquery.easing.1.3.js"></script>-->
+        <script type="text/javascript">
+            $(function() {
+                $('.nav a').bind('click',function(event){
+                    var $anchor = $(this);
+                    /*
+                    if you want to use one of the easing effects:
+                    $('html, body').stop().animate({
+                        scrollLeft: $($anchor.attr('href')).offset().left
+                    }, 1500,'easeInOutExpo');
+                     */
+                    $('html, body').stop().animate({
+                        scrollLeft: $($anchor.attr('href')).offset().left
+                    }, 500);
+                    event.preventDefault();
+                });
+            });
+        </script>
 </body>
 </html>
