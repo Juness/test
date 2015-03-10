@@ -51,12 +51,20 @@ margin: 0 auto;
 
 #slidesHolder {
 
-	background-image: url(bg.jpg);
+	//background-image: url(bg.jpg);
 }
 .slideImg{
 
 	width: 960px;
 }
+.gray{
+      	-webkit-filter: grayscale(1);
+		-moz-filter: grayscale(1);
+		-o-filter: grayscale(1);
+		-ms-filter: grayscale(1);
+		filter: grayscale(1);
+		opacity: .7;
+    }
 </style>
 
 </head>
@@ -132,6 +140,8 @@ margin: 0 auto;
 		var numberOfSlides = slides.length;
 		var slideShowInterval;
 		var speed = 16000;
+
+		$(".slideImg").addClass('gray');
 
 		$('.slideText')
 		.prepend('<div class="nav" id="leftNav">Move Left</div><div class="nav" id="rightNav">Move Right</div>');
