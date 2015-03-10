@@ -1,0 +1,189 @@
+<html>
+<head>
+<style type="text/css">
+#slideshow {
+width: 500px;
+margin: 0 auto;
+}
+#slideshow #slideshowWindow {
+	width:500px;
+	height:557px;
+	margin:0;
+	padding:0;
+	position:relative;
+	overflow:hidden;
+}
+
+#slideshow #slideshowWindow .slide {
+	margin:0;
+	padding:0;
+	width:500px;
+	height:557px;
+	float:left;
+	position:relative;
+}
+.nav {
+	display:block;
+	text-indent:-10000px;
+	position:absolute;
+	cursor:pointer;
+}
+
+#leftNav {
+	top:223px;
+	left:780px;
+	width:94px;
+	height:34px;
+	background-image:url(previous.png);
+	background-repeat:no-repeat;
+	z-index:999;
+}
+
+#rightNav {
+	top:225px;
+	left:910px;
+	width:53px;
+	height:26px;
+	background-image:url(next.png);
+	background-repeat:no-repeat;
+	z-index:999;
+}
+</style>
+
+</head>
+</body>
+<div id="slideshow">
+    <div id="slideshowWindow">
+
+        <div class="slide">
+            <img src="image1.jpg" />
+            <h2 class="slideTitle">Slide 1</h2>
+                     <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                     <p class="slideLink"><a href="#">click here</a></p>
+        </div><!--/slide-->
+
+        <div class="slide">
+            <img src="image2.jpg" />
+             <h2 class="slideTitle">Slide 2</h2>
+                     <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                     <p class="slideLink"><a href="#">click here</a></p>
+        </div><!--/slide-->
+
+        <div class="slide">
+            <img src="image3.jpg" />
+              <div class="slideText">
+                     <h2 class="slideTitle">Slide 3</h2>
+                     <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                     <p class="slideLink"><a href="#">click here</a></p>
+                 </div><!--/slideText-->
+        </div><!--/slide-->
+
+        <div class="slide">
+            <img src="image4.jpg" />
+              <div class="slideText">
+                     <h2 class="slideTitle">Slide 3</h2>
+                     <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                     <p class="slideLink"><a href="#">click here</a></p>
+                 </div><!--/slideText-->
+        </div><!--/slide-->
+
+        <div class="slide">
+            <img src="image5.jpg" />
+              <div class="slideText">
+                     <h2 class="slideTitle">Slide 3</h2>
+                     <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                     <p class="slideLink"><a href="#">click here</a></p>
+                 </div><!--/slideText-->
+        </div><!--/slide-->
+
+
+    </div><!--/slideshowWindow-->
+</div><!--/slideshow-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var currentPosition = 3;
+		var slideWidth = 500;
+		var slides = $('.slide');
+		var numberOfSlides = slides.length;
+		var slideShowInterval;
+		var speed = 6000;
+
+		$('#slideshow')
+		.prepend('<span class="nav" id="leftNav">Move Left</span>')
+		.append('<span class="nav" id="rightNav">Move Right</span>');
+
+		slideShowInterval = setInterval(changePosition, speed);
+
+		slides.wrapAll('<div id="slidesHolder"></div>')
+
+		slides.css({ 'float' : 'left' });
+
+		$('#slidesHolder').css('width', slideWidth * numberOfSlides);
+
+
+		/*function changePosition() {
+			if(currentPosition == numberOfSlides - 1) {
+				currentPosition = 0;
+			} else {
+				currentPosition++;
+			}
+			moveSlide();
+		}*/
+		function changePosition() {
+			if(currentPosition == numberOfSlides - 1) {
+				currentPosition = 0;
+				manageNav(currentPosition);
+			} else {
+				currentPosition++;
+				manageNav(currentPosition);
+			}
+			moveSlide();
+		}
+
+
+		function moveSlide() {
+				$('#slidesHolder')
+				  .animate({'marginLeft' : slideWidth*(-currentPosition)});
+		}
+		function manageNav(position) {
+			//hide left arrow if position is first slide
+			if(position==0){ $('#leftNav').hide() }
+			else { $('#leftNav').show() }
+			//hide right arrow is slide position is last slide
+			if(position==numberOfSlides-1){ $('#rightNav').hide() }
+			else { $('#rightNav').show() }
+		}
+
+		manageNav(currentPosition);
+
+		$('.nav').bind('click', function() {
+		//determine new position
+		currentPosition = ($(this).attr('id')=='rightNav')
+		? currentPosition+1 : currentPosition-1;
+
+		//hide/show controls
+		manageNav(currentPosition);
+		clearInterval(slideShowInterval);
+		slideShowInterval = setInterval(changePosition, speed);
+		moveSlide();
+});
+
+	});
+</script>
+
+
+
+<body>
+</html>
