@@ -2,23 +2,23 @@
 <head>
 <style type="text/css">
 #slideshow {
-width: 500px;
+width: 960px;
 margin: 0 auto;
 }
 #slideshow #slideshowWindow {
-	width:500px;
-	height:557px;
+	width:960px;
+	height:1000px;
 	margin:0;
 	padding:0;
 	position:relative;
-	overflow:hidden;
+	//overflow:hidden;
 }
 
 #slideshow #slideshowWindow .slide {
 	margin:0;
 	padding:0;
-	width:500px;
-	height:557px;
+	width:960px;
+	height:1000px;
 	float:left;
 	position:relative;
 }
@@ -48,6 +48,15 @@ margin: 0 auto;
 	background-repeat:no-repeat;
 	z-index:999;
 }
+
+#slidesHolder {
+
+	background-image: url(bg.jpg);
+}
+.slideImg{
+
+	width: 960px;
+}
 </style>
 
 </head>
@@ -56,25 +65,29 @@ margin: 0 auto;
     <div id="slideshowWindow">
 
         <div class="slide">
-            <img src="image1.jpg" />
-            <h2 class="slideTitle">Slide 1</h2>
+            <img src="image1.jpg" class="slideImg"/>
+            <div class="slideText">
+            	<h2 class="slideTitle">Slide 1</h2>
+                <p class="slideDes">Lorem ipsum dolor sit amet,
+                     consectetur adipisicing elit, sed do eiusmod tempor
+                     incididunt ut labore et dolore magna aliqua.</p>
+                <p class="slideLink"><a href="#">click here</a></p>
+            </div>
+        </div><!--/slide-->
+
+        <div class="slide">
+            <img src="image2.jpg" class="slideImg"/>
+            <div class="slideText">
+            <h2 class="slideTitle">Slide 2</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
                      consectetur adipisicing elit, sed do eiusmod tempor
                      incididunt ut labore et dolore magna aliqua.</p>
                      <p class="slideLink"><a href="#">click here</a></p>
+            </div>
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image2.jpg" />
-             <h2 class="slideTitle">Slide 2</h2>
-                     <p class="slideDes">Lorem ipsum dolor sit amet,
-                     consectetur adipisicing elit, sed do eiusmod tempor
-                     incididunt ut labore et dolore magna aliqua.</p>
-                     <p class="slideLink"><a href="#">click here</a></p>
-        </div><!--/slide-->
-
-        <div class="slide">
-            <img src="image3.jpg" />
+            <img src="image3.jpg" class="slideImg"/>
               <div class="slideText">
                      <h2 class="slideTitle">Slide 3</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
@@ -85,9 +98,9 @@ margin: 0 auto;
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image4.jpg" />
+            <img src="image4.jpg" class="slideImg"/>
               <div class="slideText">
-                     <h2 class="slideTitle">Slide 3</h2>
+                     <h2 class="slideTitle">Slide 4</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
                      consectetur adipisicing elit, sed do eiusmod tempor
                      incididunt ut labore et dolore magna aliqua.</p>
@@ -96,9 +109,9 @@ margin: 0 auto;
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image5.jpg" />
+            <img src="image5.jpg" class="slideImg"/>
               <div class="slideText">
-                     <h2 class="slideTitle">Slide 3</h2>
+                     <h2 class="slideTitle">Slide 5</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
                      consectetur adipisicing elit, sed do eiusmod tempor
                      incididunt ut labore et dolore magna aliqua.</p>
@@ -113,12 +126,12 @@ margin: 0 auto;
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		var currentPosition = 3;
-		var slideWidth = 500;
+		var currentPosition = 0;
+		var slideWidth = 960;
 		var slides = $('.slide');
 		var numberOfSlides = slides.length;
 		var slideShowInterval;
-		var speed = 6000;
+		var speed = 16000;
 
 		$('#slideshow')
 		.prepend('<span class="nav" id="leftNav">Move Left</span>')
