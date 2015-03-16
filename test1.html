@@ -24,9 +24,11 @@ margin: 0 auto;
 }
 .nav {
 	display:block;
-	text-indent:-10000px;
+	//text-indent:-10000px;
 	//position:absolute;
 	cursor:pointer;
+color:red;
+font-size: 44px;
 }
 
 #leftNav {
@@ -50,12 +52,15 @@ margin: 0 auto;
 }
 
 #slidesHolder {
+	//mojno sdelat' cherniy fon i umen'shat' opacity cartinki
 
 	//background-image: url(bg.jpg);
+	//background-color: black;
 }
 .slideImg{
 
 	width: 960px;
+height: 640px;
 }
 .gray{
       	-webkit-filter: grayscale(1);
@@ -68,12 +73,18 @@ margin: 0 auto;
 </style>
 
 </head>
-</body>
+<body>
+<?php
+/*
+Template Name: Page: Portfolio 2 Columns
+*/
+define('IS_FULLWIDTH', TRUE);
+get_header(); ?>
 <div id="slideshow">
     <div id="slideshowWindow">
 
         <div class="slide">
-            <img src="image1.jpg" class="slideImg"/>
+            <img src="http://rockleybrahmans.com.au/wp-content/uploads/2015/02/IMG_5295.jpg" class="slideImg"/>
             <div class="slideText">
             	<h2 class="slideTitle">Slide 1</h2>
                 <p class="slideDes">Lorem ipsum dolor sit amet,
@@ -84,7 +95,7 @@ margin: 0 auto;
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image2.jpg" class="slideImg"/>
+            <img src="http://rockleybrahmans.com.au/wp-content/uploads/2015/02/testanimal1.jpeg" class="slideImg"/>
             <div class="slideText">
             <h2 class="slideTitle">Slide 2</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
@@ -95,18 +106,19 @@ margin: 0 auto;
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image3.jpg" class="slideImg"/>
+            <img src="http://rockleybrahmans.com.au/wp-content/uploads/2015/02/testanimal.jpeg" class="slideImg"/>
               <div class="slideText">
-                     <h2 class="slideTitle">Slide 3</h2>
+                <h2 class="slideTitle">Slide 2</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
                      consectetur adipisicing elit, sed do eiusmod tempor
                      incididunt ut labore et dolore magna aliqua.</p>
                      <p class="slideLink"><a href="#">click here</a></p>
+
                  </div><!--/slideText-->
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image4.jpg" class="slideImg"/>
+            <img src="http://rockleybrahmans.com.au/wp-content/uploads/2015/02/IMG_5295.jpg" class="slideImg"/>
               <div class="slideText">
                      <h2 class="slideTitle">Slide 4</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
@@ -117,7 +129,7 @@ margin: 0 auto;
         </div><!--/slide-->
 
         <div class="slide">
-            <img src="image5.jpg" class="slideImg"/>
+            <img src="http://rockleybrahmans.com.au/wp-content/uploads/2015/02/testanimal1.jpeg" class="slideImg"/>
               <div class="slideText">
                      <h2 class="slideTitle">Slide 5</h2>
                      <p class="slideDes">Lorem ipsum dolor sit amet,
@@ -143,8 +155,9 @@ margin: 0 auto;
 
 		$(".slideImg").addClass('gray');
 
+
 		$('.slideText')
-		.prepend('<div class="nav" id="leftNav">Move Left</div><div class="nav" id="rightNav">Move Right</div>');
+		.prepend('<div class="nav" id="leftNav">&laquo;</div><div class="nav" id="rightNav">&raquo;</div>');
 
 
 		slideShowInterval = setInterval(changePosition, speed);
@@ -208,5 +221,5 @@ margin: 0 auto;
 
 
 
-<body>
+</body>
 </html>
