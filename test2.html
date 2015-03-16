@@ -1,0 +1,208 @@
+<?php
+/*
+Template Name: Page Slider
+*/
+
+define('IS_FULLWIDTH', TRUE);
+get_header(); ?>
+
+
+<style type="text/css">
+#slideshow {
+width: 960px;
+margin: 0 auto;
+}
+#slideshow #slideshowWindow {
+	width:960px;
+	height:1000px;
+	margin:0;
+	padding:0;
+	position:relative;
+	//overflow:hidden;
+}
+
+#slideshow #slideshowWindow .slide {
+	margin:0;
+	padding:0;
+	width:960px;
+	height:1000px;
+	float:left;
+	position:relative;
+}
+.nav {
+	display:inline;
+	//text-indent:-10000px;
+	//position:absolute;
+	cursor:pointer;
+color:#ab4022;
+font-size: 30px;
+float: right;
+}
+
+#leftNav {
+	//top:223px;
+	//left:780px;
+	width:60px;
+	height:60px;
+	//background-image:url(previous.png);
+	//background-repeat:no-repeat;
+	z-index:999;
+}
+
+#rightNav {
+	//top:225px;
+	//left:910px;
+	width:60px;
+	height:60px;
+	//background-image:url(next.png);
+	//background-repeat:no-repeat;
+	z-index:999;
+}
+
+#slidesHolder {
+	//mojno sdelat' cherniy fon i umen'shat' opacity cartinki
+
+	//background-image: url(bg.jpg);
+	//background-color: black;
+}
+.slideImg{
+
+	width: 960px;
+height: 640px;
+}
+.gray{
+      	-webkit-filter: grayscale(1);
+		-moz-filter: grayscale(1);
+		-o-filter: grayscale(1);
+		-ms-filter: grayscale(1);
+		filter: grayscale(1);
+		opacity: .7;
+    }
+
+
+</style>
+
+<?
+$args = array(
+	'sort_order' => 'ASC',
+	'sort_column' => 'post_title',
+	'hierarchical' => 1,
+	'exclude' => '',
+	'include' => '',
+	'meta_key' => '',
+	'meta_value' => '',
+	'authors' => '',
+	'child_of' => $post->post_parent,
+	'parent' => -1,
+	'exclude_tree' => '',
+	'number' => '',
+	'offset' => 0,
+	'post_type' => 'page',
+	'post_status' => 'publish'
+);
+$slider_pages = get_pages($args);
+?>
+
+<?php if (have_posts()) : while(have_posts()) : the_post(); ?>
+	<?php get_template_part( 'templates/pagehead' ); ?>
+
+<div id="slideshow">
+    <div id="slideshowWindow">
+
+		<?$i = 1;?>
+		<?foreach ($slider_pages as $post ) : setup_postdata( $post ); ?>
+
+				 <div class="slide" id="pageSlide<?echo $i?>">
+
+				<?php the_content(); ?>
+				<?$i++;?>
+				</div>
+
+		<?endforeach;?>
+
+
+    </div><!--/slideshowWindow-->
+</div><!--/slideshow-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var currentPosition = 0;
+		var slideWidth = 960;
+		var slides = $('.slide');
+		var numberOfSlides = slides.length;
+		var slideShowInterval;
+		var speed = 160000;
+
+		$(".slotholder").addClass('gray');
+
+
+		$('.w-pagehead')
+		.prepend('<span class="nav" id="rightNav">&raquo;</span><span class="nav" id="leftNav">&laquo;</span>');
+
+
+		slideShowInterval = setInterval(changePosition, speed);
+
+		slides.wrapAll('<div id="slidesHolder"></div>')
+
+		slides.css({ 'float' : 'left' });
+
+		$('#slidesHolder').css('width', slideWidth * numberOfSlides);
+
+
+		/*function changePosition() {
+			if(currentPosition == numberOfSlides - 1) {
+				currentPosition = 0;
+			} else {
+				currentPosition++;
+			}
+			moveSlide();
+		}*/
+		function changePosition() {
+			if(currentPosition == numberOfSlides - 1) {
+				currentPosition = 0;
+				manageNav(currentPosition);
+			} else {
+				currentPosition++;
+				manageNav(currentPosition);
+			}
+			moveSlide();
+		}
+
+
+		function moveSlide() {
+				$('#slidesHolder')
+				  .animate({'marginLeft' : slideWidth*(-currentPosition)});
+		}
+		function manageNav(position) {
+			//hide left arrow if position is first slide
+			if(position==0){ $('#leftNav').hide() }
+			else { $('#leftNav').show() }
+			//hide right arrow is slide position is last slide
+			if(position==numberOfSlides-1){ $('#rightNav').hide() }
+			else { $('#rightNav').show() }
+		}
+
+		manageNav(currentPosition);
+
+		$('.nav').bind('click', function() {
+		//determine new position
+		currentPosition = ($(this).attr('id')=='rightNav')
+		? currentPosition+1 : currentPosition-1;
+
+		//hide/show controls
+		manageNav(currentPosition);
+		clearInterval(slideShowInterval);
+		slideShowInterval = setInterval(changePosition, speed);
+		moveSlide();
+});
+
+	});
+</script>
+
+
+
+<?php endwhile; else : ?>
+	<?php _e('No posts were found.', 'us'); ?>
+<?php endif; ?>
+<?php get_footer(); ?>
