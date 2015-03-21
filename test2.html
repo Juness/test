@@ -139,8 +139,7 @@ $slider_pages = get_pages($args);
 
 		$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
 
-		$("#pageSlide"+(currentPosition+1)).find('.slideText').show().hide();
-		console.log("#pageSlide"+(currentPosition+1));
+
 
 
 		$('.w-pagehead')
@@ -155,8 +154,9 @@ $slider_pages = get_pages($args);
 
 		$('#slidesHolder').css('width', slideWidth * numberOfSlides);
 
-		//$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
-		//$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
+		$('.g-cols').hide();
+		$('.slide .g-cols:first-child').show();
+		$("#pageSlide"+(currentPosition)).find('.g-cols').show();
 
 		//loop slides, move last element to the left
 		//if(currentPosition == 0){
@@ -190,12 +190,13 @@ $slider_pages = get_pages($args);
 
 		function moveSlide() {
 			//$('#slidesHolder').animate({'marginLeft' : slideWidth*(-currentPosition)});
-			$('#slidesHolder').animate({'marginLeft' : -slideWidth});
+			//$('#slidesHolder').animate({'marginLeft' : -slideWidth});
+
 			$(".slotholder").addClass('gray');
 			$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
-			//$("#pageSlide"+currentPosition).find('.g-cols').show();
-			//$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
-			//$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
+			$("#pageSlide"+currentPosition).find('.g-cols').show();
+			$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
+			$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
 
 
 		}
@@ -213,6 +214,8 @@ $slider_pages = get_pages($args);
 		$('.nav').bind('click', function() {
 			//determine new position
 			if($(this).attr('id')=='rightNav'){
+				$("#pageSlide"+currentPosition).animate({'marginLeft' : '-='+slideWidth});
+				//$('#slidesHolder').animate({'marginLeft' : -slideWidth});
 				if(currentPosition == 0)
 					var moveDiv = $("#pageSlide"+(numberOfSlides-1));
 				else
@@ -237,6 +240,7 @@ $slider_pages = get_pages($args);
 				//alert(currentPosition+" "+numberOfSlides);
 			}
 			else {
+
 				if(currentPosition == numberOfSlides-1)
 					var moveDiv = $("#pageSlide0");
 				else
@@ -253,7 +257,9 @@ $slider_pages = get_pages($args);
 				moveDiv.css('margin-left', 0);
 
 			};
-
+			$('.g-cols').hide();
+			$('.slide .g-cols:first-child').show();
+			$("#pageSlide"+(currentPosition)).find('.g-cols').show();
 
 			//hide/show controls
 			manageNav(currentPosition);
