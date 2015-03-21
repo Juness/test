@@ -109,7 +109,7 @@ $slider_pages = get_pages($args);
 <div id="slideshow">
     <div id="slideshowWindow">
 
-		<?$i = 1;?>
+		<?$i = 0;?>
 		<?foreach ($slider_pages as $post ) : setup_postdata( $post ); ?>
 
 				 <div class="slide" id="pageSlide<?echo $i?>">
@@ -127,6 +127,7 @@ $slider_pages = get_pages($args);
 <script type="text/javascript">
 	$(document).ready(function() {
 
+		//var oldPosition = -1;
 		var currentPosition = 0;
 		var slideWidth = 960;
 		var slides = $('.slide');
@@ -135,6 +136,11 @@ $slider_pages = get_pages($args);
 		var speed = 160000;
 
 		$(".slotholder").addClass('gray');
+
+		$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
+
+		$("#pageSlide"+(currentPosition+1)).find('.slideText').show().hide();
+		console.log("#pageSlide"+(currentPosition+1));
 
 
 		$('.w-pagehead')
@@ -148,6 +154,18 @@ $slider_pages = get_pages($args);
 		slides.css({ 'float' : 'left' });
 
 		$('#slidesHolder').css('width', slideWidth * numberOfSlides);
+
+		//$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
+		//$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
+
+		//loop slides, move last element to the left
+		//if(currentPosition == 0){
+			var moveDiv = $("#pageSlide"+(numberOfSlides-1));
+			moveDiv.insertBefore($("#pageSlide0"));
+			moveDiv.css('margin-left', -slideWidth);
+
+		//};
+
 
 
 		/*function changePosition() {
@@ -171,31 +189,78 @@ $slider_pages = get_pages($args);
 
 
 		function moveSlide() {
-				$('#slidesHolder')
-				  .animate({'marginLeft' : slideWidth*(-currentPosition)});
+			//$('#slidesHolder').animate({'marginLeft' : slideWidth*(-currentPosition)});
+			$('#slidesHolder').animate({'marginLeft' : -slideWidth});
+			$(".slotholder").addClass('gray');
+			$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
+			//$("#pageSlide"+currentPosition).find('.g-cols').show();
+			//$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
+			//$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
+
+
 		}
 		function manageNav(position) {
 			//hide left arrow if position is first slide
-			if(position==0){ $('#leftNav').hide() }
-			else { $('#leftNav').show() }
+			//if(position==0){ $('#leftNav').hide() }
+			//else { $('#leftNav').show() }
 			//hide right arrow is slide position is last slide
-			if(position==numberOfSlides-1){ $('#rightNav').hide() }
-			else { $('#rightNav').show() }
+			//if(position==numberOfSlides-1){ $('#rightNav').hide() }
+			//else { $('#rightNav').show() }
 		}
 
-		manageNav(currentPosition);
+		//manageNav(currentPosition);
 
 		$('.nav').bind('click', function() {
-		//determine new position
-		currentPosition = ($(this).attr('id')=='rightNav')
-		? currentPosition+1 : currentPosition-1;
+			//determine new position
+			if($(this).attr('id')=='rightNav'){
+				if(currentPosition == 0)
+					var moveDiv = $("#pageSlide"+(numberOfSlides-1));
+				else
+					var moveDiv = $("#pageSlide"+(currentPosition-1));
 
-		//hide/show controls
-		manageNav(currentPosition);
-		clearInterval(slideShowInterval);
-		slideShowInterval = setInterval(changePosition, speed);
-		moveSlide();
-});
+				//console.log("initial position " + currentPosition );
+				//console.log("moving slide " + moveDiv.attr('id') );
+
+				//change position to the next
+				if(currentPosition == numberOfSlides-1) {
+					currentPosition = 0;
+				}
+				else {
+					currentPosition++;
+				}
+
+				//console.log("new position " + currentPosition );
+
+				moveDiv.insertAfter($("#pageSlide"+currentPosition));
+				moveDiv.css('margin-left', 0);
+
+				//alert(currentPosition+" "+numberOfSlides);
+			}
+			else {
+				if(currentPosition == numberOfSlides-1)
+					var moveDiv = $("#pageSlide0");
+				else
+					var moveDiv = $("#pageSlide"+(currentPosition+1));
+
+				if(currentPosition == 0) {
+					currentPosition = numberOfSlides-1;
+				}
+				else {
+					currentPosition--;
+				}
+
+				moveDiv.insertBefore($("#pageSlide"+currentPosition));
+				moveDiv.css('margin-left', 0);
+
+			};
+
+
+			//hide/show controls
+			manageNav(currentPosition);
+			clearInterval(slideShowInterval);
+			slideShowInterval = setInterval(changePosition, speed);
+			moveSlide();
+		});
 
 	});
 </script>
