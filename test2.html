@@ -129,6 +129,7 @@ $slider_pages = get_pages($args);
 
 		//var oldPosition = -1;
 		var currentPosition = 0;
+		var newPosition = 0;
 		var slideWidth = 960;
 		var slides = $('.slide');
 		var numberOfSlides = slides.length;
@@ -214,8 +215,9 @@ $slider_pages = get_pages($args);
 		$('.nav').bind('click', function() {
 			//determine new position
 			if($(this).attr('id')=='rightNav'){
-				$("#pageSlide"+currentPosition).animate({'marginLeft' : '-='+slideWidth});
+
 				//$('#slidesHolder').animate({'marginLeft' : -slideWidth});
+
 				if(currentPosition == 0)
 					var moveDiv = $("#pageSlide"+(numberOfSlides-1));
 				else
@@ -226,20 +228,32 @@ $slider_pages = get_pages($args);
 
 				//change position to the next
 				if(currentPosition == numberOfSlides-1) {
-					currentPosition = 0;
+					newPosition = 0;
 				}
 				else {
-					currentPosition++;
+					newPosition++;
 				}
+				moveDiv.animate({'marginLeft' : '-='+slideWidth}, 'slow');
+				$("#pageSlide"+currentPosition).animate({'marginLeft' : '-='+(slideWidth/2)}, 'slow',
+						function(){
+							moveDiv.insertAfter($("#pageSlide"+newPosition));
+							moveDiv.css('margin-left', 0);
+						}
 
+				);
+				$("#pageSlide"+currentPosition).animate({'marginLeft' : '-='+(slideWidth/2)}, 'slow');
+
+
+				currentPosition = newPosition;
 				//console.log("new position " + currentPosition );
 
-				moveDiv.insertAfter($("#pageSlide"+currentPosition));
-				moveDiv.css('margin-left', 0);
 
 				//alert(currentPosition+" "+numberOfSlides);
 			}
 			else {
+
+
+
 
 				if(currentPosition == numberOfSlides-1)
 					var moveDiv = $("#pageSlide0");
@@ -252,9 +266,10 @@ $slider_pages = get_pages($args);
 				else {
 					currentPosition--;
 				}
-
+				$("#pageSlide"+currentPosition).animate({'marginLeft' : '+='+slideWidth}, 'slow');
 				moveDiv.insertBefore($("#pageSlide"+currentPosition));
-				moveDiv.css('margin-left', 0);
+				moveDiv.css('margin-left', -slideWidth*2);
+				moveDiv.animate({'margin-left': -slideWidth}, 'slow');
 
 			};
 			$('.g-cols').hide();
