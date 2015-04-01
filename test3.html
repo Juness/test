@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Page Slider
+Template Name: Animal Slider
 */
 
 define('IS_FULLWIDTH', TRUE);
@@ -9,12 +9,12 @@ get_header(); ?>
 
 <style type="text/css">
 #slideshow {
-width: 960px;
+max-width: 1000px;
 margin: 0 auto;
 }
 #slideshow #slideshowWindow {
-	width:960px;
-	height:1000px;
+	width:100%;
+	//height:1100px;
 	margin:0;
 	padding:0;
 	position:relative;
@@ -24,8 +24,8 @@ margin: 0 auto;
 #slideshow #slideshowWindow .slide {
 	margin:0;
 	padding:0;
-	width:960px;
-	height:1000px;
+	max-width:1000px;
+	//height:1100px;
 	float:left;
 	position:relative;
 }
@@ -67,7 +67,7 @@ float: right;
 }
 .slideImg{
 
-	width: 960px;
+	width: 1000px;
 height: 640px;
 }
 .gray{
@@ -77,34 +77,67 @@ height: 640px;
 		-ms-filter: grayscale(1);
 		filter: grayscale(1);
 		opacity: .7;
+		transition-property: all;
+		transition-duration: 2s;
     }
 
 
 </style>
-<?/*print_r($post);*/?>
-<?/*php print_r (get_the_terms( $post->id, 'us_portfolio_category' )); */?>
+
+
 <?php if (have_posts()) : while(have_posts()) : the_post(); ?>
-	<?php get_template_part( 'templates/pagehead' ); ?>
+<?php get_template_part( 'templates/pagehead' ); ?>
 
-	<?
-	$prev_item = get_next_post(true, '', 'us_portfolio');
-	$next_item = get_previous_post(true, '', 'us_portfolio');
-	?>
+<?
+$terms = get_the_terms( $post->id, 'us_portfolio_category' );
+foreach ( $terms as $term ) {
+		$post_terms[] = $term->term_id;
+	}
 
+?>
+<?php $args = array(
+	'posts_per_page'   => -1,
+	'offset'           => 0,
+	'category'         => '',
+	'category_name'    => '',
+	'orderby'          => 'post_date',
+	'order'            => 'DESC',
+	'include'          => '',
+	'exclude'          => '',
+	'meta_key'         => '',
+	'meta_value'       => '',
+	'post_type'        => 'us_portfolio',
+	'post_mime_type'   => '',
+	'post_parent'      => '',
+	'post_status'      => 'publish',
+	'suppress_filters' => true,
+	'tax_query' => array(
+            array(
+                'taxonomy' => 'us_portfolio_category',
+                'field' => 'term_id',
+                'terms' => $post_terms,
+            )
+        )
 
-<pre>Prev
-<?print_r($prev_item)?>
+);
+$slider_pages = get_posts( $args );
+
+?>
+<pre>
+<?/*print_r($slider_pages)*/?>
 </pre>
-<pre>Next
-<?print_r($next_item)?>
-</pre>
 
-<pre>same
-<?print_r($post)?>
 
-</pre>
-<?print_r($slider_pages)?>
 
+<?/*
+$prev_item = get_next_post(true, '', 'us_portfolio_category');
+$next_item = get_previous_post(true, '', 'us_portfolio_category');
+*/?>
+
+
+<?/*
+$slider_pages = Array($post, $next_item, $prev_item,);
+*/?>
 
 
 
@@ -112,19 +145,37 @@ height: 640px;
     <div id="slideshowWindow">
 
 		<?$i = 0;?>
-		<?foreach ($slider_pages as $post ) : setup_postdata( $post ); ?>
+		<?foreach ($slider_pages as $singlepost ) : setup_postdata( $singlepost ); ?>
+		<?if ($singlepost->ID == $post->ID){
+			$first = $i;
+			break;
+		}
+		else{
+			array_push($slider_pages, $singlepost);
+		}
+		$i++;
+		?>
+		<?endforeach;?>
+
+		<?$slider_pages_sorted = array_slice($slider_pages, $first);?>
+
+		<?$i = 0;?>
+		<?foreach ($slider_pages_sorted as $singlepost ) : setup_postdata( $singlepost ); ?>
+
 
 				 <div class="slide" id="pageSlide<?echo $i?>">
 
 				<?php the_content(); ?>
 				<?$i++;?>
 				</div>
-
 		<?endforeach;?>
+
+
 
 
     </div><!--/slideshowWindow-->
 </div><!--/slideshow-->
+<div style="clear:both; margin-bottom: 40px;"></div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -132,15 +183,15 @@ height: 640px;
 		//var oldPosition = -1;
 		var currentPosition = 0;
 		var newPosition = 0;
-		var slideWidth = 960;
+		var slideWidth = 1000;
 		var slides = $('.slide');
 		var numberOfSlides = slides.length;
 		var slideShowInterval;
-		var speed = 960;
+		var speed = 1000;
 
-		$(".slotholder").addClass('gray');
+		$(".w-gallery").addClass('gray');
 
-		$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
+		$("#pageSlide"+currentPosition).find('.w-gallery').removeClass('gray');
 
 
 
@@ -155,7 +206,8 @@ height: 640px;
 
 		slides.css({ 'float' : 'left' });
 
-		$('#slidesHolder').css('width', slideWidth * numberOfSlides);
+		$('#slidesHolder').css('width', (numberOfSlides * 100)+"%");
+		$(".slide").css("width", (100/numberOfSlides)+"%");
 
 		$('.g-cols').hide();
 		$('.slide .g-cols:first-child').show();
@@ -168,6 +220,9 @@ height: 640px;
 			moveDiv.css('margin-left', -slideWidth);
 
 		//};
+		$('.one-third').find('.wpb_wrapper').css('padding-left', '15px');
+		$('.one-third').find('.wpb_wrapper').find('strong').css('margin-left', '-15px');
+
 
 
 
@@ -195,10 +250,10 @@ height: 640px;
 			//$('#slidesHolder').animate({'marginLeft' : slideWidth*(-currentPosition)});
 			//$('#slidesHolder').animate({'marginLeft' : -slideWidth});
 
-			$(".slotholder").addClass('gray');
-			$("#pageSlide"+currentPosition).find('.slotholder').removeClass('gray');
+			$(".w-gallery").addClass('gray');
+			$("#pageSlide"+currentPosition).find('.w-gallery').removeClass('gray');
 			$("#pageSlide"+currentPosition).find('.g-cols').show();
-			$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
+			//$("#pageSlide"+(currentPosition+1)).find('.g-cols').show().hide();
 			$("#pageSlide"+(currentPosition+1)).find('.g-cols').first().show();
 
 
@@ -232,23 +287,43 @@ height: 640px;
 				else {
 					currentPosition++;
 				}
+				var moveTo;
+				moveTo = currentPosition+(numberOfSlides-3);
+				if(moveTo >= numberOfSlides) {
+					moveTo = moveTo-numberOfSlides;
+				}
+
 				//console.log("new position " + currentPosition );
 				moveDiv.animate({'marginLeft' : '-='+(slideWidth/2)}, (speed/2),  'linear',
 					function(){
-						moveDiv.insertAfter($("#pageSlide"+currentPosition));
+						moveDiv.insertAfter($("#pageSlide"+(moveTo)));
 						moveDiv.css('margin-left', 0);
 					}
 					);
 				//moveDiv.insertAfter($("#pageSlide"+currentPosition));
 				//moveDiv.css('margin-left', 0);
 				//alert(currentPosition+" "+numberOfSlides);
+
+
 			}
 			else {
 
-				if(currentPosition == numberOfSlides-1)
-					var moveDiv = $("#pageSlide0");
-				else
-					var moveDiv = $("#pageSlide"+(currentPosition+1));
+
+				var moveDiv = (currentPosition+(numberOfSlides-2));
+
+				if(moveDiv > (numberOfSlides-1)) {
+					moveDiv = moveDiv - numberOfSlides;
+				}
+
+				var moveTo = currentPosition-1;
+
+
+
+				if(moveTo < 0) {
+					moveTo = numberOfSlides + moveTo;
+				}
+
+console.log(moveDiv +" "+moveTo +" "+currentPosition);
 
 				if(currentPosition == 0) {
 					currentPosition = numberOfSlides-1;
@@ -258,14 +333,15 @@ height: 640px;
 				}
 				$("#pageSlide"+currentPosition).animate({'marginLeft' : '+='+slideWidth}, speed, 'linear');
 
-				moveDiv.insertBefore($("#pageSlide"+currentPosition));
-				moveDiv.css('margin-left', -slideWidth*2);
-				moveDiv.animate({'margin-left': -slideWidth}, speed, 'linear');
+
+				$("#pageSlide"+moveDiv).insertBefore($("#pageSlide"+currentPosition));
+				$("#pageSlide"+moveDiv).css('margin-left', -slideWidth*2);
+				$("#pageSlide"+moveDiv).animate({'margin-left': -slideWidth}, speed, 'linear');
 
 			};
 			$('.g-cols').hide();
 			$('.slide .g-cols:first-child').show();
-			$("#pageSlide"+(currentPosition)).find('.g-cols').show();
+			$("#pageSlide"+(currentPosition)).find('.g-cols').fadeIn("slow");
 
 			//hide/show controls
 			manageNav(currentPosition);
@@ -276,6 +352,7 @@ height: 640px;
 
 	});
 </script>
+
 
 
 
