@@ -1,0 +1,73 @@
+/*Slider Styles*/
+#slideshow {
+max-width: 1000px;
+margin: 0 auto;
+}
+#slideshow #slideshowWindow {
+	width:100%;
+	//height:1100px;
+	margin:0;
+	padding:0;
+	position:relative;
+	//overflow:hidden;
+}
+
+#slideshow #slideshowWindow .slide {
+	margin:0;
+	padding:0;
+	max-width:1000px;
+	//height:1100px;
+	float:left;
+	position:relative;
+}
+.nav {
+	display:inline;
+	//text-indent:-10000px;
+	//position:absolute;
+	cursor:pointer;
+color:#ab4022;
+font-size: 30px;
+float: right;
+}
+
+#leftNav {
+	//top:223px;
+	//left:780px;
+	width:60px;
+	height:60px;
+	//background-image:url(previous.png);
+	//background-repeat:no-repeat;
+	z-index:999;
+}
+
+#rightNav {
+	//top:225px;
+	//left:910px;
+	width:60px;
+	height:60px;
+	//background-image:url(next.png);
+	//background-repeat:no-repeat;
+	z-index:999;
+}
+
+#slidesHolder {
+	//mojno sdelat' cherniy fon i umen'shat' opacity cartinki
+
+	//background-image: url(bg.jpg);
+	//background-color: black;
+}
+.slideImg{
+
+	width: 1000px;
+height: 640px;
+}
+.gray{
+      	-webkit-filter: grayscale(1);
+		-moz-filter: grayscale(1);
+		-o-filter: grayscale(1);
+		-ms-filter: grayscale(1);
+		filter: grayscale(1);
+		opacity: .7;
+		transition-property: all;
+		transition-duration: 2s;
+    }
